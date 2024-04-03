@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 authors = ["smwasm@outlook.com"]
 repository = "https://github.com/smwasm/smdton.git"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "Apache-2.0"
+description = "Data Tree Object Notation" 
 
 [dependencies]
 json = "0.12.4"

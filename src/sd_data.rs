@@ -1,4 +1,5 @@
 use super::sd_node::SmDtonNode;
+use base64::{engine::general_purpose, Engine as _};
 
 pub struct ST {}
 
@@ -11,7 +12,7 @@ impl ST {
     pub const SMDT_ARR: u8 = 0x02;
 
     // data type
-    pub const SMDT_BOO: u8 = 0x11;
+    pub const SMDT_BOO: u8 = 0x11; // json
     pub const SMDT_UI8: u8 = 0x12;
 
     pub const SMDT_I16: u8 = 0x13;
@@ -21,12 +22,14 @@ impl ST {
     pub const SMDT_U32: u8 = 0x16; // rare
     pub const SMDT_F32: u8 = 0x17; // rare
 
-    pub const SMDT_I64: u8 = 0x18;
+    pub const SMDT_I64: u8 = 0x18; // json
     pub const SMDT_U64: u8 = 0x19; // rare
-    pub const SMDT_F64: u8 = 0x1a;
+    pub const SMDT_F64: u8 = 0x1a; // json
 
-    pub const SMDT_STR: u8 = 0x21;
+    pub const SMDT_STR: u8 = 0x21; // json
     pub const SMDT_BIN: u8 = 0x22;
+
+    pub const SMDT_B64: u8 = 0xB2;
 }
 
 macro_rules! smd_new_data {
@@ -105,6 +108,22 @@ impl<'a> SmDtonData<'a> {
     #[inline]
     pub fn new_bin(data: &'a [u8]) -> Self {
         smd_new_data!(ST::SMDT_BIN, data.len(), true, Some(data), None)
+    }
+
+    #[inline]
+    pub fn new_b64(data: &str) -> Self {
+        let piece = &data[5..];
+        let bytes = general_purpose::STANDARD
+            .decode(piece)
+            .expect("Found invalid");
+        SmDtonData {
+            smdt: ST::SMDT_B64,
+            len: bytes.len(),
+            has_len: true,
+            u8a: None,
+            v8a: Some(bytes),
+            oid: 0,
+        }
     }
 
     #[inline]

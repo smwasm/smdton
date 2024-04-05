@@ -94,10 +94,18 @@ impl<'a> SmDtonMap<'a> {
                 self.add_bool(key, *data);
             }
             JsonValue::Short(s) => {
-                self.add_string(key, s);
+                if s.starts_with("$B64$") {
+                    self.add_base64(key, s);
+                } else {
+                    self.add_string(key, s);
+                }
             }
             JsonValue::String(s) => {
-                self.add_string(key, s);
+                if s.starts_with("$B64$") {
+                    self.add_base64(key, s);
+                } else {
+                    self.add_string(key, s);
+                }
             }
             JsonValue::Number(num) => {
                 let (positive, mantissa, exponent) = num.as_parts();
@@ -164,4 +172,5 @@ impl<'a> SmDtonMap<'a> {
 
     def_map_add!(add_string, new_string, &'a str);
     def_map_add!(add_bin, new_bin, &'a [u8]);
+    def_map_add!(add_base64, new_b64, &'a str);
 }

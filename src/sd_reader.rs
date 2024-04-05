@@ -1,3 +1,4 @@
+use base64::{engine::general_purpose, Engine as _};
 use json::JsonValue;
 use std::collections::HashMap;
 
@@ -269,6 +270,11 @@ impl<'a> SmDtonReader<'a> {
                         }
                         ST::SMDT_F64 => {
                             smd_add_number!(self, 8, voff, f64, obj, key);
+                        }
+                        ST::SMDT_BIN => {
+                            let bytes = self.get_bin_by_voff(voff).unwrap();
+                            let data = general_purpose::STANDARD.encode(&bytes);
+                            obj[key] = JsonValue::from("$B64$".to_string() + &data);
                         }
                         ST::SMDT_BOO => {
                             let data = self.u8a[voff + 1] == 1;

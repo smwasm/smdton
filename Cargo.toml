@@ -10,6 +10,7 @@ description = "Data Tree Object Notation"
 [dependencies]
 json = "0.12.4"
 lazy_static = "1.4.0"
+base64 = "*"
 
 [lib]
 crate-type = ["rlib", "cdylib"]

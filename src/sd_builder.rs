@@ -171,10 +171,18 @@ impl<'a> SmDtonBuilder<'a> {
                 smd_handle_data!(self, add_bool, push_bool, upoid, key, *data);
             }
             JsonValue::Short(s) => {
-                smd_handle_data!(self, add_string, push_string, upoid, key, s);
+                if s.starts_with("$B64$") {
+                    self.add_base64(upoid, key, s);
+                } else {
+                    smd_handle_data!(self, add_string, push_string, upoid, key, s);
+                }
             }
             JsonValue::String(s) => {
-                smd_handle_data!(self, add_string, push_string, upoid, key, s);
+                if s.starts_with("$B64$") {
+                    self.add_base64(upoid, key, s);
+                } else {
+                    smd_handle_data!(self, add_string, push_string, upoid, key, s);
+                }
             }
             JsonValue::Number(num) => {
                 let (positive, mantissa, exponent) = num.as_parts();
@@ -280,6 +288,7 @@ impl<'a> SmDtonBuilder<'a> {
 
     def_func_add!(add_string, new_string, &'a str);
     def_func_add!(add_bin, new_bin, &'a [u8]);
+    def_func_add!(add_base64, new_b64, &'a str);
 
     #[allow(dead_code)]
     pub fn add_node(&mut self, oid: usize, key: &'a str, new_oid: usize) {

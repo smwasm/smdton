@@ -151,10 +151,15 @@ impl SmDtonBuffer {
         // build value part
         for i in 0..vnum {
             let vtm = &values[i];
-            self.build_put_u8(vtm.smdt);
+            let mut smdt = vtm.smdt;
+            if smdt == ST::SMDT_B64 {
+                smdt = ST::SMDT_BIN;
+            }
+            self.build_put_u8(smdt);
             if vtm.has_len {
                 let mut vlen = vtm.len;
                 if vtm.smdt < 0x10 {
+                    // MAP or ARR
                     vlen = vtm.oid;
                 }
                 self.build_put_int(vlen);

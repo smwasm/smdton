@@ -193,15 +193,7 @@ impl<'a> SmDtonBuilder<'a> {
                     if !positive {
                         v = -v;
                     }
-                    if v >= 0 && v < 256 {
-                        smd_handle_data!(self, add_u8, push_u8, upoid, key, v as u8);
-                    } else if ab & 0x8000 == 0 {
-                        smd_handle_data!(self, add_i16, push_i16, upoid, key, v as i16);
-                    } else if ab & 0x80000000 == 0 {
-                        smd_handle_data!(self, add_i32, push_i32, upoid, key, v as i32);
-                    } else {
-                        smd_handle_data!(self, add_i64, push_i64, upoid, key, v);
-                    }
+                    smd_handle_data!(self, add_i64, push_i64, upoid, key, v);
                 } else {
                     let pw = 10f64.powf(exponent as f64);
                     let mut v = mantissa as f64 * pw;

@@ -1,7 +1,7 @@
 [package]
 name = "smdton"
-version = "0.1.3"
-edition = "2021"
+version = "0.1.4"
+edition = "2024"
 authors = ["smwasm@outlook.com"]
 repository = "https://github.com/smwasm/smdton.git"
 license = "Apache-2.0"

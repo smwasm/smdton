@@ -309,7 +309,7 @@ impl<'a> SmDtonBuilder<'a> {
 
     #[allow(dead_code)]
     pub fn push_node(&mut self, oid: usize, new_oid: usize) {
-        let ma = &self.nodes[new_oid as usize];
+        let ma = &self.nodes[new_oid - 1];
         self._do_push(oid, SmDtonData::new_node(ma));
     }
 }

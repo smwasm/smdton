@@ -455,5 +455,5 @@ impl<'a> SmDtonReader<'a> {
 
     def_func_get_by_id!(get_string_by_id, get_string_by_voff, &str);
     def_func_get_by_id!(get_bin_by_id, get_bin_by_voff, &[u8]);
-    def_func_get_by_key!(get_node_id_by_id, get_node_id_by_voff, usize);
+    def_func_get_by_id!(get_node_id_by_id, get_node_id_by_voff, usize);
 }
